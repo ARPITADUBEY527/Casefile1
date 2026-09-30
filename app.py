@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import folium
+import os
 
 from streamlit_folium import st_folium
 
@@ -39,25 +40,35 @@ st.info(
 # LOAD DATA
 # =========================================================
 
+def get_data_path(filename):
+    if os.path.exists(os.path.join("data", filename)):
+        return os.path.join("data", filename)
+    return filename
+
+def get_model_path(filename):
+    if os.path.exists(os.path.join("models", filename)):
+        return os.path.join("models", filename)
+    return filename
+
 movement = pd.read_csv(
-    "movement_analysis.csv"
+    get_data_path("movement_analysis.csv")
 )
 
 priority = pd.read_csv(
-    "search_priority.csv"
+    get_data_path("search_priority.csv")
 )
 
 route = pd.read_csv(
-    "route_transition_matrix.csv",
+    get_data_path("route_transition_matrix.csv"),
     index_col=0
 )
 
 model = joblib.load(
-    "location_prediction_model.pkl"
+    get_model_path("location_prediction_model.pkl")
 )
 
 label_encoder = joblib.load(
-    "area_label_encoder.pkl"
+    get_model_path("area_label_encoder.pkl")
 )
 
 
